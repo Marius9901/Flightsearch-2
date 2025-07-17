@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Airline Auswahl</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: #f8fbff;
+      color: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: flex-start;
+      position: relative;
+    }
+    .settings-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      color: #005288;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .settings-button:hover {
+      color: #003e66;
+    }
+    .settings-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      z-index: 1001;
+      max-width: 300px;
+      width: 100%;
+    }
+    body:not(.theme-dark):not(.theme-pink) .settings-modal {
+      background: #ffffff;
+      color: #1a1a1a;
+      border: 1px solid #cfd8e8;
+      box-shadow: 0 8px 24px rgba(0, 0, 40, 0.1);
+    }
+    .settings-modal h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: #003e66;
+    }
+    .settings-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+    }
+    .theme-dark {
+      background: #0d1117;  
+      color: #f0f6fc; 
+    }
+    .theme-dark .settings-button {
+      color: #8b949e;
+    }
+    .theme-dark .settings-button:hover {
+      color: #c9d1d9;
+    }
+    .theme-dark .container {
+      background: #161b22;
+      border-color: #30363d;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+    .theme-dark h2 {
+      color: #58a6ff; 
+    }
+    .theme-dark label {
+      color: #c9d1d9;
+    }
+    .theme-dark select {
+      background: #21262d;
+      color: #f0f6fc;
+      border-color: #30363d;
+    } 
+    .theme-dark select:hover,
+    .theme-dark select:focus {
+      background: #2c313a;
+      border-color: #58a6ff;
+    }
+    .theme-dark option[value=""] {
+  color: #7a828e;
+    }
+    .theme-dark #info {
+      background: #1c2128;
+      border-color: #30363d;
+      color: #c9d1d9;
+    } 
+    .theme-dark .highlight {
+      color: #79c0ff; 
+      font-weight: 600;
+    }
+    .theme-dark #revision {
+      color: #6e7681;
+    }
+    .theme-dark .settings-modal {
+      background: #161b22;
+      color: #f0f6fc;
+      border: 1px solid #30363d;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+    .theme-pink {
+      background: #ffe6f0;
+      color: #880044;
+    }
+    .theme-pink .settings-button {
+      color: #aa0055;
+    }
+    .theme-pink .container {
+      background: #fff0f6;
+      border-color: #f8aacc;
+    }
+    .theme-pink select {
+      background: #ffd9ec;
+      color: #880044;
+      border-color: #ff99cc;
+    }
+    .theme-pink #info {
+      background: #ffe0ef;
+      border-color: #f4a3c2;
+      color: #880044;
+    }
+    .theme-pink .settings-modal {
+      background: #fff0f6;
+      color: #880044;
+      border: 1px solid #f4a3c2;
+      box-shadow: 0 8px 24px rgba(255, 105, 180, 0.3);
+    }
+    .container {
+      background: #ffffff;
+      border: 1px solid #cfd8e8;
+      border-radius: 12px;
+      padding: 24px 32px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 40, 0.05);
+      position: relative;
+      z-index: 10;
+    }
+    h2 {
+      margin: 0 0 24px 0;
+      font-weight: 600;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      color: #005288;
+      text-align: center;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #004466;
+    }
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1.5px solid #a9b9cc;
+      background: #f0f6ff;
+      color: #003355;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+    select:hover, select:focus {
+      border-color: #005288;
+      outline: none;
+      background: #e4f0ff;
+    }
+    #info {
+      margin-top: 28px;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #002b45;
+      background: #e9f1fb;
+      border-radius: 10px;
+      padding: 20px 24px;
+      border: 1px solid #aac8f7;
+      position: relative;
+      min-height: 160px;
+    }
+    .highlight {
+      font-weight: 600;
+      color: #004466;
+    }
+    #revision {
+      position: fixed;
+      bottom: 14px;
+      left: 14px;
+      font-size: 0.85rem;
+      color: #7a8ba6;
+      font-weight: 400;
+      user-select: none;
+      font-style: italic;
+    }
+    .side-img {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 80vh;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.3s ease;
+      display: none;
+    }
+    .side-img.left {
+      left: 0;
+    }
+    .side-img.right {
+      right: 0;
+    }
+    .theme-pink .side-img {
+      display: block;
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body>
+  <button class="settings-button" onclick="toggleSettings()" aria-label="Einstellungen">
+    <i class="fas fa-cog"></i>
+     </button>
+  <div class="container">
+    <h2>Airline Auswahl</h2>
+    <label for="airline">Wähle eine Airline:</label>
+    <select id="airline" aria-label="Airline Auswahl">
+      <option value="">-- Bitte wählen --</option>
+      <option value="Aegean">Aegean</option>
+      <option value="Air Lingus">Air Lingus</option>
+      <option value="Aerogal">Aerogal</option>
+      <option value="Aerolineas Argentinas">Aerolineas Argentinas</option>
+      <option value="Aero Mexico">Aero Mexico</option>
+      <option value="Air Alsie">Air Alsie</option>
+      <option value="Air Arabia">Air Arabia</option>
+      <option value="Air Arabia Maroc">Air Arabia Maroc</option>
+      <option value="Air Astana">Air Astana</option>
+      <option value="Air Austral">Air Austral</option>
+      <option value="Air Baltic">Air Baltic</option>
+      <option value="Air Canada">Air Canada</option>
+      <option value="Air Caraibes">Air Caraibes</option>
+      <option value="Air Corsica">Air Corsica</option>
+      <option value="Air Creebec">Air Creebec</option>
+      <option value="Air Cote d'Ivoire">Air Cote d'Ivoire</option>
+      <option value="Air Dolomiti">Air Dolomiti</option>
+      <option value="Air Europa Lineas Aeras">Air Europa Lineas Aeras</option>
+      <option value="Air France">Air France</option>
+      <option value="Air Greenland">Air Greenland</option>
+      <option value="Air India">Air India</option>
+      <option value="Air Inuit">Air Inuit</option>
+      <option value="Air Macao">Air Macao</option>
+      <option value="Air Mauritius">Air Mauritius</option>
+      <option value="Air New Zealand">Air New Zealand</option>
+      <option value="Air Niugini">Air Niugini</option>
+      <option value="Air North (Canada)">Air North (Canada)</option>
+      <option value="Air Rarotonga">Air Rarotonga</option>
+      <option value="Air Serbia">Air Serbia</option>
+      <option value="Air Seyschelles">Air Seyschelles</option>
+      <option value="Air Tahiti">Air Tahiti</option>
+      <option value="Air Tahiti Nui">Air Tahiti Nui</option>
+      <option value="Air Tindi">Air Tindi</option>
+      <option value="Air Transat">Air Transat</option>
+      <option value="Aircalin">Aircalin</option>
+      <option value="Alaska Airlines">Alaska Airlines</option>
+      <option value="All Nippon Airlines">All Nippon Airlines</option>
+      <option value="Allegiant Air">Allegiant Air</option>
+      <option value="American Airlines">American Airlines</option>
+      <option value="Arajet">Arajet</option>
+      <option value="Arkia Airlines">Arkia Airlines</option>
+      <option value="Asiana">Asiana</option>
+      <option value="Asky">Asky</option>
+      <option value="ASL Airlines">ASL Airlines</option>
+      <option value="Atlantic Airways">Atlantic Airways</option>
+      <option value="Atlas Air Service">Atlas Air Service</option>
+      <option value="Austrian">Austrian</option>
+      <option value="Avelo Airlines">Avelo Airlines</option>
+      <option value="Avianca">Avianca</option>
+      <option value="Azul Linhas Aereas Brazileiras">Azul Linhas Aereas Brazileiras</option>
+      <option value="Bahamas Air">Bahamas Air</option>
+      <option value="Bangkok Airlines">Bangkok Airlines</option>
+      <option value="Binter Cabo Verde">Binter Cabo Verde</option>
+      <option value="Binter Canarias">Binter Canarias</option>
+      <option value="Boutique Air">Boutique Air</option>
+      <option value="BRA Sverige AB">BRA Sverige AB</option>
+      <option value="Breeze">Breeze</option>
+      <option value="British Airways">British Airways</option>
+      <option value="Brussels Airlines">Brussels Airlines</option>
+      <option value="Cabo Verde Airlines">Cabo Verde Airlines</option>
+      <option value="Calm Air">Calm Air</option>
+      <option value="Canadian North">Canadian North</option>
+      <option value="Canary Fly">Canary Fly</option>
+      <option value="Cape Air">Cape Air</option>
+      <option value="Caribbean Airlines">Caribbean Airlines</option>
+      <option value="Cathay Dragon">Cathay Dragon</option>
+      <option value="Cathay Pacific">Cathay Pacific</option>
+      <option value="Cayman Airways">Cayman Airways</option>
+      <option value="Central Mountain Air">Central Mountain Air</option>
+      <option value="Chair Airlines">Chair Airlines</option>
+      <option value="China Airlines">China Airlines</option>
+      <option value="City Jet">City Jet</option>
+      <option value="Condor">Condor</option>
+      <option value="Copa Airlines">Copa Airlines</option>
+      <option value="Corsair Intl.">Corsair Intl.</option>
+      <option value="Croatia Airlines">Croatia Airlines</option>
+      <option value="DAN Air">DAN Air</option>
+      <option value="DAT">DAT</option>
+      <option value="Delta Airlines">Delta Airlines</option>
+      <option value="Discover">Discover</option>
+      <option value="Edelweiß Airlines">Edelweiß Airlines</option>
+      <option value="Egypt Air">Egypt Air</option>
+      <option value="EL AL Airlines">EL AL Airlines</option>
+      <option value="Elangeni">Elangeni</option>
+      <option value="Emirates">Emirates</option>
+      <option value="Ethiopian">Ethiopian</option>
+      <option value="Etihad Airways">Etihad Airways</option>
+      <option value="Euro Atlantic">Euro Atlantic</option>
+      <option value="Eurowings">Eurowings</option>
+      <option value="EVA Airways">EVA Airways</option>
+      <option value="Excellent Air">Excellent Air</option>
+      <option value="Fiji Airways">Fiji Airways</option>
+      <option value="Finair">Finair</option>
+      <option value="Fits">Fits</option>
+      <option value="Flair Airlines">Flair Airlines</option>
+      <option value="Fly Dubai">Fly Dubai</option>
+      <option value="French Bee">French Bee</option>
+      <option value="Frontier Airlines">Frontier Airlines</option>
+      <option value="Garuda Indonesia">Garuda Indonesia</option>
+      <option value="GOL">GOL</option>
+      <option value="Gulf Air">Gulf Air</option>
+      <option value="Harbour Air">Harbour Air</option>
+      <option value="Hawaiian Airlines">Hawaiian Airlines</option>
+      <option value="Helvetic Airways">Helvetic Airways</option>
+      <option value="Hong Kong Airways">Hong Kong Airways</option>
+      <option value="Hong Kong Express Airways">Hong Kong Express Airways</option>
+      <option value="Hype Private Jets">Hype Private Jets</option>
+      <option value="Iberia">Iberia</option>
+      <option value="Icelandair">Icelandair</option>
+      <option value="Israir Airlines">Israir Airlines</option>
+      <option value="ITA Airways">ITA Airways</option>
+      <option value="Japan Airlines">Japan Airlines</option>
+      <option value="Japan Transocean Air">Japan Transocean Air</option>
+      <option value="Jazzera Airways">Jazzera Airways</option>
+      <option value="JetBlue">JetBlue</option>
+      <option value="Jetstar">Jetstar</option>
+      <option value="Jetstar Japan">Jetstar Japan</option>
+      <option value="JSX">JSX</option>
+      <option value="Kenmore Air">Kenmore Air</option>
+      <option value="Kenia Airways">Kenia Airways</option>
+      <option value="Key Lime Air">Key Lime Air</option>
+      <option value="KLM">KLM</option>
+      <option value="KM Malta Airlines">KM Malta Airlines</option>
+      <option value="Kuwait Airways">Kuwait Airways</option>
+      <option value="La Compagnie">La Compagnie</option>
+      <option value="LAN Argentina">LAN Argentina</option>
+      <option value="LAN Equador">LAN Equador</option>
+      <option value="LATAM Airlines">LATAM Airlines</option>
+      <option value="LaudaMotion">LaudaMotion</option>
+      <option value="LEVEL">LEVEL</option>
+      <option value="LEVEL Openskies">LEVEL Openskies</option>
+      <option value="Link Airways">Link Airways</option>
+      <option value="Logan Air">Logan Air</option>
+      <option value="LOT Polish Airlines">LOT Polish Airlines</option>
+      <option value="Lufthansa">Lufthansa</option>
+      <option value="Lufthansa City">Lufthansa City</option>
+      <option value="Luxair">Luxair</option>
+      <option value="Malaysia Airlines">Malaysia Airlines</option>
+      <option value="Mandarin Airlines">Mandarin Airlines</option>
+      <option value="Mesa Airlines">Mesa Airlines</option>
+      <option value="MIAT Mongalian Airlines">MIAT Mongalian Airlines</option>
+      <option value="MEA">MEA</option>
+      <option value="NAS Aviation">NAS Aviation</option>
+      <option value="Norse">Norse</option>
+      <option value="Norse Atlantic UK">Norse Atlantic UK</option>
+      <option value="Norwegian">Norwegian</option>
+      <option value="Norwegian Air Sweden">Norwegian Air Sweden</option>
+      <option value="Olympic Air">Olympic Air</option>
+      <option value="Oman Air">Oman Air</option>
+      <option value="PAD Aviation Service">PAD Aviation Service</option>
+      <option value="Pakistan International">Pakistan International</option>
+      <option value="PAL Airlines">PAL Airlines</option>
+      <option value="Pascan">Pascan</option>
+      <option value="Pegasus">Pegasus</option>
+      <option value="Perimeter Aviation">Perimeter Aviation</option>
+      <option value="Philippine Airlines">Philippine Airlines</option>
+      <option value="Porter Airlines">Porter Airlines</option>
+      <option value="Precision Air">Precision Air</option>
+      <option value="Private Wings">Private Wings</option>
+      <option value="ProAir">ProAir</option>
+      <option value="Qantas">Qantas</option>
+      <option value="Qatar Airways">Qatar Airways</option>
+      <option value="Ravn Alaska">Ravn Alaska</option>
+      <option value="Rhein Neckar Air">Rhein Neckar Air</option>
+      <option value="Royal Air Maroc">Royal Air Maroc</option>
+      <option value="Royal Brunei Airlines">Royal Brunei Airlines</option>
+      <option value="Royal Jordanian">Royal Jordanian</option>
+      <option value="RwandAir">RwandAir</option>
+      <option value="SalamAir">SalamAir</option>
+      <option value="SAS">SAS</option>
+      <option value="SATA Air Acores">SATA Air Acores</option>
+      <option value="SATA Internacional">SATA Internacional</option>
+      <option value="Saudi Arabian Airlines">Saudi Arabian Airlines</option>
+      <option value="Scenic Airlines">Scenic Airlines</option>
+      <option value="Scoot">Scoot</option>
+      <option value="Shenzhen Airlines">Shenzhen Airlines</option>
+      <option value="Silver Cloud Air">Silver Cloud Air</option>
+      <option value="Sky Airline">Sky Airline</option>
+      <option value="Sky Airline PERU">Sky Airline PERU</option>
+      <option value="Skyside">Skyside</option>
+      <option value="Smartwings">Smartwings</option>
+      <option value="South African Airlines">South African Airlines</option>
+      <option value="Southern Airways Express">Southern Airways Express</option>
+      <option value="Southwest">Southwest</option>
+      <option value="Spirit Airlines">Spirit Airlines</option>
+      <option value="SriLankan Airlines">SriLankan Airlines</option>
+      <option value="STARLUX Airlines">STARLUX Airlines</option>
+      <option value="SunExpress">SunExpress</option>
+      <option value="Swiss">Swiss</option>
+      <option value="Sylt Air">Sylt Air</option>
+      <option value="TAP">TAP</option>
+      <option value="Thai Airways">Thai Airways</option>
+      <option value="Tigerair Taiwan">Tigerair Taiwan</option>
+      <option value="Tradewind">Tradewind</option>
+      <option value="Transavia France">Transavia France</option>
+      <option value="Transavia Netherlands">Transavia Netherlands</option>
+      <option value="Travelcoup Switzerland">Travelcoup Switzerland</option>
+      <option value="Tropic Air">Tropic Air</option>
+      <option value="TUIfly">TUIfly</option>
+      <option value="Turkish Airlines">Turkish Airlines</option>
+      <option value="Uni Air">Uni Air</option>
+      <option value="United Airlines">United Airlines</option>
+      <option value="Vietnam Airlines">Vietnam Airlines</option>
+      <option value="Virgin Atlantic">Virgin Atlantic</option>
+      <option value="Virgin Australia">Virgin Australia</option>
+      <option value="VistaJet">VistaJet</option>
+      <option value="Viva Aerobus">Viva Aerobus</option>
+      <option value="Volotea">Volotea</option>
+      <option value="Vueling">Vueling</option>
+      <option value="Wasaya Airways">Wasaya Airways</option>
+      <option value="WestJet">WestJet</option>
+      <option value="Wideroe">Wideroe</option>
+      <option value="Windward Island Airways">Windward Island Airways</option>
+      <option value="Wingo">Wingo</option>
+      <option value="Yemenia">Yemenia</option>
+    </select> 
+    <div id="info" aria-live="polite">Bitte wähle eine Airline aus.</div>
+  </div>
+  <div id="revision">Stand: 17.07.2025</div>
+
+  <img src="Daniel.jpg" class="side-img left" alt="Dekobild links" />
+  <img src="Daniel.jpg" class="side-img right" alt="Dekobild rechts" />
+  <div id="settingsOverlay" class="settings-overlay" style="display: none;" onclick="toggleSettings()"></div>
+  <div id="settingsModal" class="settings-modal" style="display: none;">
+    <h3>Einstellungen</h3>
+    <label>
+      <input type="radio" name="theme" value="default" checked onchange="setTheme('default')" /> Standardmodus
+    </label><br />
+    <label>
+      <input type="radio" name="theme" value="dark" onchange="setTheme('dark')" /> Dunkelmodus
+    </label><br />
+    <label>
+      <input type="radio" name="theme" value="pink" onchange="setTheme('pink')" /> Slay Mode
+    </label>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
+  
+<script>
+  const airlineInfo = {
+    "Aegean": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Air Lingus": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Aerogal": { business: "Ja", partner: "Ja", continent: "Südamerika" },
+    "Aerolineas Argentinas": { business: "Nein", partner: "Ja", continent: "Südamerika" },
+    "Aero Mexico": { business: "Ja", partner: "Ja", continent: "Nordamerika" },
+    "Air Alsie": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Air Arabia": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Air Arabia Maroc": { business: "Nein", partner: "Nein", continent: "Afrika" },
+    "Air Astana": { business: "Ja", partner: "Ja", continent: "Asien" },
+    "Air Austral": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Air Baltic": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Air Canada": { business: "Ja", partner: "Ja", continent: "Nordamerika" },
+    "Air Caraibes": { business: "Ja", partner: "Ja", continent: "Europa & Nordamerika" },
+    "Air Corsica": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Air Creebec": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "Air Cote d'Ivoire": { business: "Nein", partner: "Nein", continent: "Afrika" },
+    "Air Dolomiti": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Air Europa Lineas Aeras": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Air France": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Air Greenland": { business: "Ja", partner: "Nein", continent: "Nordamerika" },
+    "Air India": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Air Inuit": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "Air Macao": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Air Mauritius": { business: "Nein", partner: "Ja", continent: "Afrika" },
+    "Air New Zealand": { business: "Ja", partner: "Ja", continent: "Australien" },
+    "Air Niugini": { business: "Ja", partner: "Ja", continent: "Asien" },
+    "Air North (Canada)": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Air Rarotonga": { business: "Nein", partner: "Nein", continent: "Australien" },
+    "Air Serbia": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Air Seyschelles": { business: "Nein", partner: "Ja", continent: "Afrika" },
+    "Air Tahiti": { business: "Nein", partner: "Nein", continent: "Australien" },
+    "Air Tahiti Nui": { business: "Nein", partner: "Nein", continent: "Australien" },
+    "Air Tindi": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Air Transat": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "Aircalin": { business: "Ja", partner: "Nein", continent: "Australien" },
+    "Alaska Airlines": { business: "Ja", partner: "Ja", continent: "Nordamerika" },
+    "All Nippon Airlines": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Allegiant Air": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "American Airlines": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "Arajet": { business: "Ja", partner: "Ja", continent: "Mittelamerika" },
+    "Arkia Airlines": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Asiana": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Asky": { business: "Ja", partner: "Ja", continent: "Afrika" },
+    "ASL Airlines": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Atlantic Airways": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Atlas Air Service": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Austrian": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Avelo Airlines": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Avianca": { business: "Ja", partner: "Ja", continent: "Südamerika" },
+    "Azul Linhas Aereas Brazileiras": { business: "Ja", partner: "Nein", continent: "Südamerika" },
+    "Bahamas Air": { business: "Ja", partner: "Nein", continent: "Mittelamerika" },
+    "Bangkok Airlines": { business: "Nein", partner: "Ja", continent: "Asien" },
+    "Binter Cabo Verde": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Binter Canarias": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Boutique Air": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "BRA Sverige AB": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Breeze": { business: "Ja", partner: "Ja", continent: "Nordamerika" },
+    "British Airways": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Brussels Airlines": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Cabo Verde Airlines": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Calm Air": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Canadian North": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Canary Fly": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Cape Air": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Caribbean Airlines": { business: "Nein", partner: "Ja", continent: "Mittelamerika" },
+    "Cathay Dragon": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Cathay Pacific": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Cayman Airways": { business: "Nein", partner: "Nein", continent: "Mittelamerika" },
+    "Central Mountain Air": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Chair Airlines": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "China Airlines": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "City Jet": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Condor": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Copa Airlines": { business: "Nein", partner: "Ja", continent: "Mittelamerika" },
+    "Corsair Intl.": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Croatia Airlines": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "DAN Air": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "DAT": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Delta Airlines": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "Discover": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Edelweiß Airlines": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Egypt Air": { business: "Ja", partner: "Nein", continent: "Afrika" },
+    "EL AL Airlines": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "Elangeni": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Emirates": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Ethiopian": { business: "Nein", partner: "Ja", continent: "Afrika" },
+    "Etihad Airways": { business: "Ja", partner: "Ja", continent: "Asien" },
+    "Euro Atlantic": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Eurowings": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "EVA Airways": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Excellent Air": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Fiji Airways": { business: "Nein", partner: "Ja", continent: "Australien" },
+    "Finair": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Fits": { business: "Nein", partner: "Ja", continent: "Asien" },
+    "Flair Airlines": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Fly Dubai": { business: "Ja", partner: "Ja", continent: "Asien" },
+    "French Bee": { business: "Preco", partner: "Ja", continent: "Europa" },
+    "Frontier Airlines": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Garuda Indonesia": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "GOL Airlines": { business: "Nein", partner: "Ja", continent: "Südamerika" },
+    "Gulf Air": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Harbour Air": { business: "No", partner: "Ja", continent: "Nordamerika" },
+    "Hawaiian Airlines": { business: "Ja", partner: "Ja", continent: "Nordamerika" },
+    "Helvetic Airways": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "Hong Kong Airways": { business: "Ja", partner: "Ja", continent: "Asien" },
+    "Hong Kong Express Airways": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Hype Privte Jets": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "Iberia": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Icelandair": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Israir Airlines": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "ITA Airways": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Japan Airlines": { business: "Nein", partner: "Ja", continent: "Asien" },
+    "Japan Transocean Air": { business: "Nein", partner: "Ja", continent: "Asien" },
+    "Jazzera Airways": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "JetBlue": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "Jetstar": { business: "Nein", partner: "Ja", continent: "Australien" },
+    "Jetstar Japan": { business: "Nein", partner: "Ja", continent: "Asien" },
+    "JSX": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Kenmore Air": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Kenya Airways": { business: "Nein", partner: "Nein", continent: "Afrika" },
+    "Key Lime Air": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "KLM": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "KM Malta Airlines": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Kuwait Airways": { business: "Nein", partner: "Ja", continent: "Asien" },
+    "La Compaigne": { business: "Ja", partner: "Ja", continent: "Nordamerika" },
+    "LAN Argentia": { business: "Nein", partner: "Ja", continent: "Südamerika" },
+    "LAN Ecuador": { business: "Nein", partner: "Ja", continent: "Südamerika" },
+    "LATAM Airlines": { business: "Nein", partner: "Ja", continent: "Südamerika" },
+    "LaudaMotion": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "LEVEL": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "LEVEL Openskies": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Link Airways": { business: "Nein", partner: "Ja", continent: "Australien" },
+    "Logan Air": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "LOT Polish Airlines": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Lufthansa": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Lufthansa City": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Luxair": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Malaysian Airlines": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Mandarin Airlines": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Mesa Airlines": { business: "Ja", partner: "Nein", continent: "Nordamerika" },
+    "MIAT Mongolian Airlines": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Middle East Airlines": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "NAS Aviation": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Norse": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Norse Antlantic UK": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Norwegian": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Norwegian Air Sweden": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Oman Air": { business: "Ja", partner: "Ja", continent: "Asien" },
+    "Olympic": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "PAD Aviation Service": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "Pakistan International Airlines": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "PAL Airlines": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Pascan": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Pegasus": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Perimeter Aiviation": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "Philippine Airlines": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "Porter Airlines": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Precision Air": { business: "Nein", partner: "Ja", continent: "Afrika" },
+    "Private Wings": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "ProAir": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Qantas": { business: "Ja", partner: "Ja", continent: "Australien" },
+    "Qatar Airways": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Ravn Alaska": { business: "Ja", partner: "Nein", continent: "Nordamerika" },
+    "Rhein Neckar Air": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Royal Air Maroc": { business: "Nein", partner: "Nein", continent: "Afrika" },
+    "Royal Brunei Airlines": { business: "Nein", partner: "Ja", continent: "Asien" },
+    "Royal Jordanian": { business: "Ja", partner: "Ja", continent: "Asien" },
+    "RwandAir": { business: "Ja", partner: "Nein", continent: "Afrika" },
+    "SalamAir": { business: "Nein", partner: "Ja", continent: "Asien" },
+    "SAS": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "SATA Air Acores": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "SATA Internacional": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "Saudi Arabian Airlines": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Scenic Airlines": { business: "Ja", partner: "Nein", continent: "Nordamerika" },
+    "Scoot": { business: "Ja", partner: "Nein", continent: "Asien " },
+    "Shenzhen Airlines": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Silver Cloud Air": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Sky Airline": { business: "Nein", partner: "Ja", continent: "Südamerika" },
+    "Sky Airline Peru": { business: "Nein", partner: "Ja", continent: "Südamerika" },
+    "Skyside": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Smartwings": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "South African Airways": { business: "Nein", partner: "Ja", continent: "Afrika" },
+    "Southern Airways Express": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Southwest": { business: "Nein", partner: "Nein", continent: "Nordamerika" },
+    "Spirit Airlines": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "SriLanka Airlines": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "STARLUX Airlines": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "SunExpress": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Swiss": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Sylt Air": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "TAP Portugal": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Thai Airways": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Tigerair Taiwan": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Tradewind": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Transavia France": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Transavia Netherlands": { business: "Nein", partner: "Nein", continent: "Europa" }, 
+    "Travelcoup Switzerland": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Tropic Air": { business: "Nein", partner: "Ja", continent: "Mittelamerika" },
+    "TUIfly": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Turkish Airlines": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "Uni Air": { business: "Nein", partner: "Nein", continent: "Asien" },
+    "United Airlines": { business: "Ja", partner: "Ja", continent: "Nordamerika" },
+    "Vietnam Airlines": { business: "Ja", partner: "Nein", continent: "Asien" },
+    "Virgin Atlantic": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "Virgin Australia": { business: "Ja", partner: "Ja", continent: "Australien" },
+    "VistaJet": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "Viva Aerobus": { business: "Nein", partner: "Ja", continent: "Mittelamerika" },
+    "Volotea": { business: "Nein", partner: "Ja", continent: "Europa" },
+    "Vueling": { business: "Nein", partner: "Nein", continent: "Europa" },
+    "Wasaya Airways": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "WestJet": { business: "Nein", partner: "Ja", continent: "Nordamerika" },
+    "Wideroe": { business: "Ja", partner: "Ja", continent: "Europa" },
+    "Windward Island Airways": { business: "Ja", partner: "Nein", continent: "Europa" },
+    "Wingo": { business: "Nein", partner: "Ja", continent: "Südamerika" },
+    "Yemenia": { business: "Nein", partner: "Nein", continent: "Asien" }
+  };
+    const select = document.getElementById("airline");
+    const infoDiv = document.getElementById("info");
+
+    select.addEventListener("change", () => {
+      const airline = select.value;
+      if (airline && airlineInfo[airline]) {
+        const info = airlineInfo[airline];
+        infoDiv.innerHTML = `
+          <div><span class="highlight">Ausgewählte Airline:</span> ${airline}</div>
+          <div><span class="highlight">Business Class:</span> ${info.business}</div>
+          <div><span class="highlight">Travel Partner available:</span> ${info.partner}</div>
+          <div><span class="highlight">Continent:</span> ${info.continent}</div>
+        `;
+      } else if (airline) {
+        infoDiv.innerHTML = `<div><span class="highlight">Ausgewählte Airline:</span> ${airline}</div>
+                             <div>Keine weitere Information verfügbar.</div>`;
+      } else {
+        infoDiv.innerHTML = "Bitte wähle eine Airline aus.";
+      }
+    });
+
+    function toggleSettings() {
+      const modal = document.getElementById("settingsModal");
+      const overlay = document.getElementById("settingsOverlay");
+      const isVisible = modal.style.display === "block";
+      modal.style.display = isVisible ? "none" : "block";
+      overlay.style.display = isVisible ? "none" : "block";
+    }
+
+    function setTheme(theme) {
+      document.body.classList.remove("theme-dark", "theme-pink");
+      if (theme === "dark") {
+        document.body.classList.add("theme-dark");
+      } else if (theme === "pink") {
+        document.body.classList.add("theme-pink");
+      }
+    }
+</script>
+</body>
+</html>
