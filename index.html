@@ -735,6 +735,13 @@
         document.body.classList.add("theme-pink");
       }
     }
+  const inputField = document.getElementById("airlineInput");
+    inputField.addEventListener("focus", () => {
+      inputField.setAttribute("list", "airlineList");
+      inputField.value = "";
+      const clickEvent = new Event('input', { bubbles: true });
+      inputField.dispatchEvent(clickEvent);
+    });
 </script>
 </body>
 </html>
