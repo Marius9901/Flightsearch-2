@@ -239,8 +239,9 @@
      </button>
   <div class="container">
     <h2>Airline Auswahl</h2>
-    <label for="airline">Wähle eine Airline:</label>
-    <select id="airline" aria-label="Airline Auswahl">
+    <label for="airlineInput">Wähle eine Airline:</label>
+     <input id="airlineInput" list="airlineList" placeholder=" Eingeben..." />
+      <datalist id="airlineList">
       <option value="">-- Bitte wählen --</option>
       <option value="Aegean">Aegean</option>
       <option value="Air Lingus">Air Lingus</option>
@@ -457,7 +458,7 @@
       <option value="Windward Island Airways">Windward Island Airways</option>
       <option value="Wingo">Wingo</option>
       <option value="Yemenia">Yemenia</option>
-    </select> 
+     </datalist>
     <div id="info" aria-live="polite">Bitte wähle eine Airline aus.</div>
   </div>
   <div id="revision">Stand: 17.07.2025</div>
@@ -697,7 +698,7 @@
     "Wingo": { business: "Nein", partner: "Ja", continent: "Südamerika" },
     "Yemenia": { business: "Nein", partner: "Nein", continent: "Asien" }
   };
-    const select = document.getElementById("airline");
+    const select = document.getElementById("airlineInput");
     const infoDiv = document.getElementById("info");
 
     select.addEventListener("change", () => {
