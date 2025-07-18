@@ -152,6 +152,7 @@
       box-shadow: 0 8px 24px rgba(0, 0, 40, 0.05);
       position: relative;
       z-index: 10;
+      box-sizing: border-box;
     }
     h2 {
       margin: 0 0 24px 0;
@@ -231,6 +232,22 @@
       display: block;
       opacity: 0.4;
     }
+    input[list] {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1.5px solid #a9b9cc;
+      background: #f0f6ff;
+      color: #003355;
+      transition: border-color 0.3s ease;
+    }
+    input[list]:hover,
+    input[list]:focus {
+      border-color: #005288;
+      outline: none;
+      background: #e4f0ff;
+     }
   </style>
 </head>
 <body>
