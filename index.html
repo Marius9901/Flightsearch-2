@@ -18,6 +18,33 @@
       flex-direction: column;
       align-items: center;
     }
+    .menu-button {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      background: none;
+      color: #005288;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      z-index: 1100;
+      margin-top: 30px;
+    }
+    .menu-button:hover {
+      color: #003e66;
+    }
+    .theme-dark .menu-button {
+      color: #8b949e;
+    } 
+    .theme-dark .menu-button:hover {
+      color: #c9d1d9;
+    }
+    .theme-pink .menu-button {
+      color: #aa0055;
+    }
+    .theme-pink .menu-button:hover {
+      color: #880044;
+    }
     .settings-button {
       position: fixed;
       top: 20px;
@@ -253,6 +280,9 @@
   </style>
 </head>
 <body>
+  <button class="menu-button" onclick="toggleMenu()" aria-label="Menü">
+    <i class="fas fa-bars"></i>
+  </button>
   <button class="settings-button" onclick="toggleSettings()" aria-label="Einstellungen">
     <i class="fas fa-cog"></i>
      </button>
