@@ -346,11 +346,9 @@
     <a href="feedback.html">Feedback</a>
     <a href="impressum.html">Impressum</a>
   </div>
-
   <button class="settings-button" onclick="toggleSettings()" aria-label="Einstellungen">
     <i class="fas fa-cog"></i>
   </button>
-
   <div class="container">
     <h2>Impressum</h2>
     <p>
@@ -360,10 +358,8 @@
       E-Mail: kontakt@fudama.de
     </p>
   </div>
-
   <img class="slay-img" src="Daniel.jpg" alt="Slay Mode" />
   <div id="revision">Stand: 17.07.2025</div>
-
   <div id="settingsOverlay" class="settings-overlay" onclick="toggleSettings()"></div>
   <div id="settingsModal" class="settings-modal">
     <h3>Einstellungen</h3>
@@ -371,20 +367,16 @@
     <label><input type="radio" name="theme" value="dark" onchange="setTheme('dark')"> Dunkelmodus</label><br>
     <label><input type="radio" name="theme" value="pink" onchange="setTheme('pink')"> Slay Mode</label>
   </div>
-
   <script>
-    // Theme beim Laden anwenden
     const savedTheme = localStorage.getItem("theme") || "default";
     if (savedTheme !== "default") {
       setTheme(savedTheme);
       document.querySelector(`input[name="theme"][value="${savedTheme}"]`).checked = true;
     }
-
     function toggleMenu() {
       const menu = document.getElementById("sideMenu");
       menu.style.width = (menu.style.width === "250px") ? "0" : "250px";
     }
-
     function toggleSettings() {
       const modal = document.getElementById("settingsModal");
       const overlay = document.getElementById("settingsOverlay");
@@ -392,7 +384,6 @@
       modal.style.display = isVisible ? "none" : "block";
       overlay.style.display = isVisible ? "none" : "block";
     }
-
     function setTheme(theme) {
       document.body.classList.remove("theme-dark", "theme-pink");
       if (theme === "dark") {
