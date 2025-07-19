@@ -330,21 +330,27 @@
       opacity: 0.8;
      }
     }
+     #settingsModal,
+     #settingsOverlay {
+      display: none;
+    }
   </style>
 </head>
 <body>
-   <button class="menu-button" onclick="toggleMenu()" aria-label="Menü">
+  <button class="menu-button" onclick="toggleMenu()" aria-label="Menü">
     <i class="fas fa-bars"></i>
   </button>
   <div id="sideMenu" class="side-menu">
-  <a href="javascript:void(0)" class="close-button" onclick="toggleMenu()">&times;</a>
-  <a href="index.html">Main</a>
-  <a href="feedback.html">Feedback</a>
-  <a href="impressum.html">Impressum</a>
+    <a href="javascript:void(0)" class="close-button" onclick="toggleMenu()">&times;</a>
+    <a href="index.html">Main</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="impressum.html">Impressum</a>
   </div>
+
   <button class="settings-button" onclick="toggleSettings()" aria-label="Einstellungen">
     <i class="fas fa-cog"></i>
-     </button>
+  </button>
+
   <div class="container">
     <h2>Impressum</h2>
     <p>
@@ -354,30 +360,31 @@
       E-Mail: kontakt@fudama.de
     </p>
   </div>
+
   <img class="slay-img" src="Daniel.jpg" alt="Slay Mode" />
   <div id="revision">Stand: 17.07.2025</div>
-  <div id="settingsOverlay" class="settings-overlay" onclick="toggleSettings()" style="display: none;"></div>
-  <div id="settingsModal" class="settings-modal" style="display: none;">
+
+  <div id="settingsOverlay" class="settings-overlay" onclick="toggleSettings()"></div>
+  <div id="settingsModal" class="settings-modal">
     <h3>Einstellungen</h3>
-    <label><input type="radio" name="theme" value="default" checked onchange="setTheme('default')"> Standardmodus</label><br>
+    <label><input type="radio" name="theme" value="default" onchange="setTheme('default')"> Standardmodus</label><br>
     <label><input type="radio" name="theme" value="dark" onchange="setTheme('dark')"> Dunkelmodus</label><br>
     <label><input type="radio" name="theme" value="pink" onchange="setTheme('pink')"> Slay Mode</label>
   </div>
 
   <script>
-    fetch("menu.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("menuContainer").innerHTML = html;
-      });
+    // Theme beim Laden anwenden
+    const savedTheme = localStorage.getItem("theme") || "default";
+    if (savedTheme !== "default") {
+      setTheme(savedTheme);
+      document.querySelector(`input[name="theme"][value="${savedTheme}"]`).checked = true;
+    }
+
     function toggleMenu() {
-  const menu = document.getElementById("sideMenu");
-  if (menu.style.width === "250px") {
-    menu.style.width = "0";
-  } else {
-    menu.style.width = "250px";
-  }
-}
+      const menu = document.getElementById("sideMenu");
+      menu.style.width = (menu.style.width === "250px") ? "0" : "250px";
+    }
+
     function toggleSettings() {
       const modal = document.getElementById("settingsModal");
       const overlay = document.getElementById("settingsOverlay");
@@ -393,6 +400,7 @@
       } else if (theme === "pink") {
         document.body.classList.add("theme-pink");
       }
+      localStorage.setItem("theme", theme);
     }
   </script>
 </body>
