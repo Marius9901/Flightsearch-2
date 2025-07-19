@@ -356,8 +356,8 @@
   </div>
   <img class="slay-img" src="Daniel.jpg" alt="Slay Mode" />
   <div id="revision">Stand: 17.07.2025</div>
-  <div id="settingsOverlay" class="settings-overlay" onclick="toggleSettings()"></div>
-  <div id="settingsModal" class="settings-modal">
+  <div id="settingsOverlay" class="settings-overlay" onclick="toggleSettings()" style="display: none;"></div>
+  <div id="settingsModal" class="settings-modal" style="display: none;">
     <h3>Einstellungen</h3>
     <label><input type="radio" name="theme" value="default" checked onchange="setTheme('default')"> Standardmodus</label><br>
     <label><input type="radio" name="theme" value="dark" onchange="setTheme('dark')"> Dunkelmodus</label><br>
