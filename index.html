@@ -823,7 +823,15 @@
         infoDiv.innerHTML = "Bitte wähle eine Airline aus.";
       }
     });
-
+const savedTheme = localStorage.getItem("theme") || "default";
+    if (savedTheme !== "default") {
+      setTheme(savedTheme);
+      document.querySelector(`input[name="theme"][value="${savedTheme}"]`).checked = true;
+    }
+    function toggleMenu() {
+      const menu = document.getElementById("sideMenu");
+      menu.style.width = (menu.style.width === "250px") ? "0" : "250px";
+    }
     function toggleSettings() {
       const modal = document.getElementById("settingsModal");
       const overlay = document.getElementById("settingsOverlay");
@@ -831,7 +839,6 @@
       modal.style.display = isVisible ? "none" : "block";
       overlay.style.display = isVisible ? "none" : "block";
     }
-
     function setTheme(theme) {
       document.body.classList.remove("theme-dark", "theme-pink");
       if (theme === "dark") {
@@ -839,22 +846,8 @@
       } else if (theme === "pink") {
         document.body.classList.add("theme-pink");
       }
+      localStorage.setItem("theme", theme);
     }
-  const inputField = document.getElementById("airlineInput");
-    inputField.addEventListener("focus", () => {
-      inputField.setAttribute("list", "airlineList");
-      inputField.value = "";
-      const clickEvent = new Event('input', { bubbles: true });
-      inputField.dispatchEvent(clickEvent);
-    });
-  function toggleMenu() {
-  const menu = document.getElementById("sideMenu");
-  if (menu.style.width === "250px") {
-    menu.style.width = "0";
-  } else {
-    menu.style.width = "250px";
-  }
-}
 </script>
 </body>
 </html>
