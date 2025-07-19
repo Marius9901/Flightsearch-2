@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Impressum</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+   body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: #f8fbff;
+      color: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+      flex-direction: column;
+      align-items: center;
+    }
+    .menu-button {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      background: none;
+      color: #005288;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      z-index: 1100;
+      margin-top: 30px;
+    }
+    .menu-button:hover {
+      color: #003e66;
+    }
+    .theme-dark .menu-button {
+      color: #8b949e;
+    } 
+    .theme-dark .menu-button:hover {
+      color: #c9d1d9;
+    }
+    .theme-pink .menu-button {
+      color: #aa0055;
+    }
+    .theme-pink .menu-button:hover {
+      color: #880044;
+    }
+    .settings-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: none;
+      color: #005288;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      z-index: 1100;
+      margin-top: 10px;
+    }
+    .settings-button:hover {
+      color: #003e66;
+    }
+    .settings-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      z-index: 1001;
+      max-width: 300px;
+      width: 100%;
+    }
+    body:not(.theme-dark):not(.theme-pink) .settings-modal {
+      background: #ffffff;
+      color: #1a1a1a;
+      border: 1px solid #cfd8e8;
+      box-shadow: 0 8px 24px rgba(0, 0, 40, 0.1);
+    }
+    .settings-modal h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: #003e66;
+    }
+    .settings-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+    }
+    .theme-dark {
+      background: #0d1117;  
+      color: #f0f6fc; 
+    }
+    .theme-dark .settings-button {
+      color: #8b949e;
+    }
+    .theme-dark .settings-button:hover {
+      color: #c9d1d9;
+    }
+    .theme-dark .container {
+      background: #161b22;
+      border-color: #30363d;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+    .theme-dark h2 {
+      color: #58a6ff; 
+    }
+    .theme-dark label {
+      color: #c9d1d9;
+    }
+    .theme-dark select {
+      background: #21262d;
+      color: #f0f6fc;
+      border-color: #30363d;
+    } 
+    .theme-dark select:hover,
+    .theme-dark select:focus {
+      background: #2c313a;
+      border-color: #58a6ff;
+    }
+    .theme-dark option[value=""] {
+  color: #7a828e;
+    }
+    .theme-dark #info {
+      background: #1c2128;
+      border-color: #30363d;
+      color: #c9d1d9;
+    } 
+    .theme-dark .highlight {
+      color: #79c0ff; 
+      font-weight: 600;
+    }
+    .theme-dark #revision {
+      color: #6e7681;
+    }
+    .theme-dark .settings-modal {
+      background: #161b22;
+      color: #f0f6fc;
+      border: 1px solid #30363d;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+    .theme-pink {
+      background: #ffe6f0;
+      color: #880044;
+    }
+    .theme-pink .settings-button {
+      color: #aa0055;
+    }
+    .theme-pink .container {
+      background: #fff0f6;
+      border-color: #f8aacc;
+    }
+    .theme-pink select {
+      background: #ffd9ec;
+      color: #880044;
+      border-color: #ff99cc;
+    }
+    .theme-pink #info {
+      background: #ffe0ef;
+      border-color: #f4a3c2;
+      color: #880044;
+    }
+    .theme-pink .settings-modal {
+      background: #fff0f6;
+      color: #880044;
+      border: 1px solid #f4a3c2;
+      box-shadow: 0 8px 24px rgba(255, 105, 180, 0.3);
+    }
+    .container {
+      background: #ffffff;
+      border: 1px solid #cfd8e8;
+      border-radius: 12px;
+      padding: 24px 32px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 40, 0.05);
+      position: relative;
+      z-index: 10;
+      box-sizing: border-box;
+      margin-bottom: 120px;
+    }
+    h2 {
+      margin: 0 0 24px 0;
+      font-weight: 600;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      color: #005288;
+      text-align: center;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #004466;
+    }
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1.5px solid #a9b9cc;
+      background: #f0f6ff;
+      color: #003355;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+    select:hover, select:focus {
+      border-color: #005288;
+      outline: none;
+      background: #e4f0ff;
+    }
+    #info {
+      margin-top: 28px;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #002b45;
+      background: #e9f1fb;
+      border-radius: 10px;
+      padding: 20px 24px;
+      border: 1px solid #aac8f7;
+      position: relative;
+      min-height: 160px;
+    }
+    .highlight {
+      font-weight: 600;
+      color: #004466;
+    }
+    #revision {
+      position: fixed;
+      bottom: 14px;
+      left: 14px;
+      font-size: 0.85rem;
+      color: #7a8ba6;
+      font-weight: 400;
+      user-select: none;
+      font-style: italic;
+      z-index: 9999;
+      background: transparent;
+    }
+    .slay-img {
+      display: none;
+      margin: 24px auto 0 auto;
+      max-width: 200px;
+      height: auto;
+      opacity: 0.9;
+      pointer-events: none;
+      transition: transform 0.3s ease;
+     }
+     .theme-pink .slay-img {
+      display: block;
+      margin-top: 10px;
+      animation: slay-spin 3s linear infinite;
+    }
+    .theme-pink .container {
+      margin-top: 40px;
+      margin-bottom: 5px;
+    }
+    .side-menu {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #ffffff;
+      overflow-x: hidden;
+      transition: 0.4s;
+      padding-top: 60px;
+      z-index: 1200;
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+    }
+    .side-menu a {
+      padding: 12px 24px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      color: #003e66;
+      display: block;
+      transition: background 0.3s;
+    }
+    .side-menu a:hover {
+      background-color: #e9f1fb;
+    }
+    .close-button {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 2rem;
+      color: #003e66;
+      text-decoration: none;
+    }
+    .theme-dark .side-menu {
+      background-color: #161b22;
+    }
+    .theme-dark .side-menu a,
+    .theme-dark .close-button {
+      color: #f0f6fc;
+    }
+    .theme-dark .side-menu a:hover {
+      background-color: #21262d;
+    }
+    .theme-pink .side-menu {
+      background-color: #fff0f6;
+    }
+    .theme-pink .side-menu a,
+    .theme-pink .close-button {
+      color: #880044;
+    }
+    .theme-pink .side-menu a:hover {
+      background-color: #ffe6f0;
+    }
+    @keyframes slay-spin {
+    from {
+      transform: rotate(0deg);
+     }
+    to {
+      transform: rotate(360deg);
+     }
+    }
+    @media (max-width: 300px) {
+    .slay-img {
+      max-width: 100%;
+      margin-top: 16px;
+      opacity: 0.8;
+     }
+    }
+  </style>
+</head>
+<body>
+   <button class="menu-button" onclick="toggleMenu()" aria-label="Menü">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div id="sideMenu" class="side-menu">
+  <a href="javascript:void(0)" class="close-button" onclick="toggleMenu()">&times;</a>
+  <a href="index.html">Main</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="impressum.html">Impressum</a>
+  </div>
+  <button class="settings-button" onclick="toggleSettings()" aria-label="Einstellungen">
+    <i class="fas fa-cog"></i>
+     </button>
+  <div class="container">
+    <h2>Impressum</h2>
+    <p>
+      FuDaMa<br>
+      Weg beim Jäger 193<br>
+      22335 Hamburg<br><br>
+      E-Mail: kontakt@fudama.de
+    </p>
+  </div>
+  <img class="slay-img" src="Daniel.jpg" alt="Slay Mode" />
+  <div id="revision">Stand: 17.07.2025</div>
+  <div id="settingsOverlay" class="settings-overlay" onclick="toggleSettings()"></div>
+  <div id="settingsModal" class="settings-modal">
+    <h3>Einstellungen</h3>
+    <label><input type="radio" name="theme" value="default" checked onchange="setTheme('default')"> Standardmodus</label><br>
+    <label><input type="radio" name="theme" value="dark" onchange="setTheme('dark')"> Dunkelmodus</label><br>
+    <label><input type="radio" name="theme" value="pink" onchange="setTheme('pink')"> Slay Mode</label>
+  </div>
+
+  <script>
+    fetch("menu.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("menuContainer").innerHTML = html;
+      });
+    function toggleMenu() {
+  const menu = document.getElementById("sideMenu");
+  if (menu.style.width === "250px") {
+    menu.style.width = "0";
+  } else {
+    menu.style.width = "250px";
+  }
+}
+    function toggleSettings() {
+      const modal = document.getElementById("settingsModal");
+      const overlay = document.getElementById("settingsOverlay");
+      const isVisible = modal.style.display === "block";
+      modal.style.display = isVisible ? "none" : "block";
+      overlay.style.display = isVisible ? "none" : "block";
+    }
+
+    function setTheme(theme) {
+      document.body.classList.remove("theme-dark", "theme-pink");
+      if (theme === "dark") {
+        document.body.classList.add("theme-dark");
+      } else if (theme === "pink") {
+        document.body.classList.add("theme-pink");
+      }
+    }
+  </script>
+</body>
+</html>
