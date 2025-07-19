@@ -262,6 +262,58 @@
       margin-top: 40px;
       margin-bottom: 5px;
     }
+    .side-menu {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #ffffff;
+      overflow-x: hidden;
+      transition: 0.4s;
+      padding-top: 60px;
+      z-index: 1200;
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+    }
+    .side-menu a {
+      padding: 12px 24px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      color: #003e66;
+      display: block;
+      transition: background 0.3s;
+    }
+    .side-menu a:hover {
+      background-color: #e9f1fb;
+    }
+    .close-button {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 2rem;
+      color: #003e66;
+      text-decoration: none;
+    }
+    .theme-dark .side-menu {
+      background-color: #161b22;
+    }
+    .theme-dark .side-menu a,
+    .theme-dark .close-button {
+      color: #f0f6fc;
+    }
+    .theme-dark .side-menu a:hover {
+      background-color: #21262d;
+    }
+    .theme-pink .side-menu {
+      background-color: #fff0f6;
+    }
+    .theme-pink .side-menu a,
+    .theme-pink .close-button {
+      color: #880044;
+    }
+    .theme-pink .side-menu a:hover {
+      background-color: #ffe6f0;
+    }
     @keyframes slay-spin {
     from {
       transform: rotate(0deg);
@@ -283,6 +335,12 @@
   <button class="menu-button" onclick="toggleMenu()" aria-label="Menü">
     <i class="fas fa-bars"></i>
   </button>
+  <div id="sideMenu" class="side-menu">
+  <a href="javascript:void(0)" class="close-button" onclick="toggleMenu()">&times;</a>
+  <a href="index.html">Main</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="impressum.html">Impressum</a>
+  </div>
   <button class="settings-button" onclick="toggleSettings()" aria-label="Einstellungen">
     <i class="fas fa-cog"></i>
      </button>
@@ -789,6 +847,14 @@
       const clickEvent = new Event('input', { bubbles: true });
       inputField.dispatchEvent(clickEvent);
     });
+  function toggleMenu() {
+  const menu = document.getElementById("sideMenu");
+  if (menu.style.width === "250px") {
+    menu.style.width = "0";
+  } else {
+    menu.style.width = "250px";
+  }
+}
 </script>
 </body>
 </html>
