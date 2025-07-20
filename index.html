@@ -823,10 +823,12 @@
         infoDiv.innerHTML = "Bitte wähle eine Airline aus.";
       }
     });
-const savedTheme = localStorage.getItem("theme") || "default";
+    const savedTheme = localStorage.getItem("theme") || "default";
     if (savedTheme !== "default") {
       setTheme(savedTheme);
       document.querySelector(`input[name="theme"][value="${savedTheme}"]`).checked = true;
+    } else {
+      document.querySelector(`input[name="theme"][value="default"]`).checked = true;
     }
     function toggleMenu() {
       const menu = document.getElementById("sideMenu");
@@ -848,6 +850,27 @@ const savedTheme = localStorage.getItem("theme") || "default";
       }
       localStorage.setItem("theme", theme);
     }
+    document.addEventListener("click", function (e) {
+      const sideMenu = document.getElementById("sideMenu");
+      const menuButton = document.querySelector(".menu-button");
+      const clickedInsideMenu = sideMenu.contains(e.target);
+      const clickedMenuButton = menuButton.contains(e.target);
+      if (!clickedInsideMenu && !clickedMenuButton) {
+        sideMenu.style.width = "0";
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        document.getElementById("sideMenu").style.width = "0";
+        document.getElementById("settingsModal").style.display = "none";
+        document.getElementById("settingsOverlay").style.display = "none";
+      }
+    });
+    document.querySelectorAll('#sideMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById("sideMenu").style.width = "0";
+      });
+    });
 </script>
 </body>
 </html>
