@@ -357,7 +357,7 @@
       FuDaMa<br>
       Weg beim Jäger 193<br>
       22335 Hamburg<br><br>
-      E-Mail: FuDaMa@outlook.com
+      E-Mail: FuDaMa@Outlook.com
     </p>
   </div>
   <img class="slay-img" src="Daniel.jpg" alt="Slay Mode" />
@@ -373,11 +373,12 @@
     const savedTheme = localStorage.getItem("theme") || "default";
     if (savedTheme !== "default") {
       setTheme(savedTheme);
-      document.querySelector(`input[name="theme"][value="${savedTheme}"]`).checked = true;
+      const radio = document.querySelector(`input[name="theme"][value="${savedTheme}"]`);
+      if (radio) radio.checked = true;
     }
     function toggleMenu() {
-      const menu = document.getElementById("sideMenu");
-      menu.style.width = (menu.style.width === "250px") ? "0" : "250px";
+      const sideMenu = document.getElementById("sideMenu");
+      sideMenu.style.width = (sideMenu.style.width === "250px") ? "0" : "250px";
     }
     function toggleSettings() {
       const modal = document.getElementById("settingsModal");
@@ -395,6 +396,22 @@
       }
       localStorage.setItem("theme", theme);
     }
+    document.addEventListener("click", function (e) {
+      const sideMenu = document.getElementById("sideMenu");
+      const menuButton = document.querySelector(".menu-button");
+      const isClickInsideMenu = sideMenu.contains(e.target);
+      const isClickOnMenuButton = menuButton.contains(e.target);
+      if (!isClickInsideMenu && !isClickOnMenuButton) {
+        sideMenu.style.width = "0";
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        document.getElementById("sideMenu").style.width = "0";
+        document.getElementById("settingsModal").style.display = "none";
+        document.getElementById("settingsOverlay").style.display = "none";
+      }
+    });
   </script>
 </body>
 </html>
