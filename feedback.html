@@ -367,18 +367,19 @@
     form.feedback-form input[type="submit"]:hover {
       background-color: #003e66;
     }
-    @media (max-width: 400px) {
+   @media (max-width: 600px) {
   body {
     padding: 24px 16px;
   }
-
   form.feedback-form {
     padding: 0 12px;
+    max-width: 320px;   /* schmaleres Formular */
   }
-
   form.feedback-form textarea {
-    height: 60px;
-    font-size: 0.9rem;
+    width: 90%;         /* kleiner als 100% */
+    max-width: 300px;   /* max Breite */
+    height: 80px;       /* falls gewünscht */
+    font-size: 0.95rem;
   }
 }
   </style>
