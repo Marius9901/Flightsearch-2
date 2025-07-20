@@ -327,6 +327,7 @@
       margin-top: 32px;
       display: flex;
       flex-direction: column;
+      padding: 0 20px;
     }
     form.feedback-form textarea {
       width: 100%;
@@ -359,9 +360,20 @@
       transition: background-color 0.3s ease;
       font-family: 'Montserrat', sans-serif;
       font-size: 1rem;
+      align-self: center;
+      width: 100%;
+      max-width: 250px;
     }
     form.feedback-form input[type="submit"]:hover {
       background-color: #003e66;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 24px 16px;
+      }
+      form.feedback-form {
+        padding: 0 12px;
+      }
     }
   </style>
 </head>
