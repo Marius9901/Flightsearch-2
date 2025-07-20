@@ -367,18 +367,18 @@
     form.feedback-form input[type="submit"]:hover {
       background-color: #003e66;
     }
-   @media (max-width: 600px) {
+  @media (max-width: 600px) {
   body {
     padding: 24px 16px;
   }
   form.feedback-form {
     padding: 0 12px;
-    max-width: 320px;
+    max-width: 320px;  
   }
   form.feedback-form textarea {
-    width: 90%;         
+    width: 90%;      
     max-width: 300px;
-    height: 80px;
+    height: 80px; 
     font-size: 0.95rem;
   }
 }
@@ -426,13 +426,9 @@
     function toggleSettings() {
       const modal = document.getElementById("settingsModal");
       const overlay = document.getElementById("settingsOverlay");
-      if (modal.style.display === "block") {
-        modal.style.display = "none";
-        overlay.style.display = "none";
-      } else {
-        modal.style.display = "block";
-        overlay.style.display = "block";
-      }
+      const isVisible = modal.style.display === "block";
+      modal.style.display = isVisible ? "none" : "block";
+      overlay.style.display = isVisible ? "none" : "block";
     }
     function setTheme(theme) {
       document.body.classList.remove("theme-dark", "theme-pink");
@@ -443,6 +439,27 @@
       }
       localStorage.setItem("theme", theme);
     }
+    document.addEventListener("click", function (e) {
+      const sideMenu = document.getElementById("sideMenu");
+      const menuButton = document.querySelector(".menu-button");
+      const clickedInsideMenu = sideMenu.contains(e.target);
+      const clickedMenuButton = menuButton.contains(e.target);
+      if (!clickedInsideMenu && !clickedMenuButton) {
+        sideMenu.style.width = "0";
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        document.getElementById("sideMenu").style.width = "0";
+        document.getElementById("settingsModal").style.display = "none";
+        document.getElementById("settingsOverlay").style.display = "none";
+      }
+    });
+    document.querySelectorAll('#sideMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById("sideMenu").style.width = "0";
+      });
+    });
   </script>
 </body>
 </html>
